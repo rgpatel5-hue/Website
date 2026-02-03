@@ -1,67 +1,543 @@
 <!DOCTYPE html>
-<html class="preload" lang="en">
-  <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<html lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 
-    <!-- The name of your site that shows up in the browser tab -->
-    <title>Drop Challenge - charity: water</title>
+  <title>Drop Challenge - charity: water</title>
+  <meta name="description" content="Fill the Glass! Every tap brings clean water closer. Donate and help bring clean water to those in need.">
+  
+  <meta property="og:title" content="Drop Challenge - charity: water">
+  <meta property="og:description" content="Fill the glass and make a real drop! Every donation brings clean water closer.">
+  <meta property="og:type" content="website">
 
-    <!-- Describe what your site is about -->
-    <meta name="description" content="Play the Drop Challenge! Tap to fill the glass and help spread awareness for clean water. Every drop counts.">
+  <link rel="shortcut icon" href="/images/favicon.png">
+  
+  <style>
+    /* charity: water Brand Colors */
+    :root {
+      --cw-yellow: #FFC82C;
+      --cw-yellow-light: #FFCF50;
+      --cw-yellow-dark: #E5B327;
+      --cw-blue-dark: #005587;
+      --cw-blue: #0077B5;
+      --cw-blue-light: #00A3E0;
+      --cw-water-blue: #00A3E0;
+      --cw-water-blue-light: #5BC4F1;
+      --cw-white: #F5F5F5;
+      --cw-black: #1A1A1A;
+      --cw-gray: #4A4A4A;
+    }
 
-    <!-- Open Graph for sharing -->
-    <meta property="og:title" content="Drop Challenge - charity: water">
-    <meta property="og:description" content="Tap to fill the glass! Every drop counts. Can you beat the clock?">
-    <meta property="og:type" content="website">
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    <!-- This is the small icon that shows up in the browser tab -->
-    <link rel="shortcut icon" href="/images/favicon.png">
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
 
-    <!-- Styling for this site -->
-    <link rel="stylesheet" href="/css/styles.css">
-  </head>
+    body {
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      color: var(--cw-white);
+      user-select: none;
+    }
 
-  <!-- This class is removed if the user has JavaScript enabled -->
-  <body class="no-js">
-    <header>
-      <!-- Dark mode toggle -->
-      <div class="mode-toggle">
-        <button class="[ toggle-button ] [ js-mode-toggle ]">
-          <span class="toggle-icon" aria-hidden="true"></span>
-          <span class="[ toggle-text ] [ js-mode-toggle-text ]">Switch to dark theme</span>
-        </button>
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(5, 82, 135, 0.85);
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      color: var(--cw-yellow);
+    }
+
+    .donate-btn-header {
+      background-color: var(--cw-yellow);
+      color: var(--cw-black);
+      border: none;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+
+    .donate-btn-header:hover {
+      background-color: var(--cw-yellow-light);
+    }
+
+    /* Main Container - Hero Section */
+    .main-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px;
+      gap: 60px;
+      max-width: 100%;
+      margin: 0;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+      background-image: linear-gradient(135deg, rgba(5, 82, 135, 0.7) 0%, rgba(0, 119, 181, 0.7) 100%), url('/images/hero-image.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+      width: 100%;
+    }
+
+    /* Left Side */
+    .left-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--cw-yellow);
+      color: var(--cw-black);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      width: fit-content;
+    }
+
+    .badge::before {
+      content: '✓';
+      font-weight: 700;
+    }
+
+    .left-content h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--cw-white);
+    }
+
+    .left-content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      opacity: 0.95;
+    }
+
+    .stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--cw-yellow);
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-top: 5px;
+    }
+
+    /* Right Side - Glass Card */
+    .right-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .glass-card {
+      background: var(--cw-white);
+      border-radius: 20px;
+      padding: 40px 35px;
+      width: 100%;
+      max-width: 350px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      color: var(--cw-black);
+    }
+
+    .glass-card h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .glass-card .subtitle {
+      font-size: 0.9rem;
+      color: var(--cw-water-blue);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    /* Glass Visual */
+    .glass-visual {
+      width: 120px;
+      height: 180px;
+      margin: 25px auto;
+      position: relative;
+    }
+
+    .glass-outline {
+      width: 100%;
+      height: 100%;
+      border: 3px solid var(--cw-gray);
+      border-radius: 0 0 15px 15px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%);
+    }
+
+    .glass-outline::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 85%;
+      height: 15px;
+      border: 3px solid var(--cw-gray);
+      border-radius: 50%;
+    }
+
+    .water-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(180deg, var(--cw-water-blue-light) 0%, var(--cw-water-blue) 100%);
+      border-radius: 0 0 12px 12px;
+      transition: height 0.5s ease;
+      height: 0%;
+      overflow: hidden;
+    }
+
+    .water-fill::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,10 Q30,0 60,10 T120,10' stroke='rgba(255,255,255,0.3)' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+      background-size: 60px 20px;
+      animation: wave 3s linear infinite;
+    }
+
+    @keyframes wave {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(60px); }
+    }
+
+    .glass-card .instruction {
+      font-size: 0.9rem;
+      color: var(--cw-water-blue);
+      font-weight: 600;
+      margin: 20px 0;
+    }
+
+    /* Amount Display */
+    .amount-display {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--cw-water-blue);
+      margin: 15px 0 5px 0;
+    }
+
+    .amount-sub {
+      font-size: 0.85rem;
+      color: var(--cw-gray);
+      margin-bottom: 20px;
+    }
+
+    /* Donation Buttons Grid */
+    .donation-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .donation-btn {
+      background-color: var(--cw-white);
+      color: var(--cw-black);
+      border: 2px solid var(--cw-gray);
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+    }
+
+    .donation-btn:hover {
+      border-color: var(--cw-water-blue);
+      color: var(--cw-water-blue);
+    }
+
+    .donation-btn.active {
+      background-color: var(--cw-water-blue);
+      color: var(--cw-white);
+      border-color: var(--cw-water-blue);
+    }
+
+    /* Custom Amount Input */
+    .custom-amount {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--cw-gray);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+      font-family: inherit;
+    }
+
+    .custom-amount::placeholder {
+      color: #999;
+    }
+
+    .custom-amount:focus {
+      outline: none;
+      border-color: var(--cw-water-blue);
+    }
+
+    /* Donate Now Button */
+    .donate-btn-main {
+      width: 100%;
+      background-color: var(--cw-yellow);
+      color: var(--cw-black);
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: background-color 0.3s;
+    }
+
+    .donate-btn-main:hover {
+      background-color: var(--cw-yellow-light);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .main-container {
+        flex-direction: column;
+        padding: 30px;
+        gap: 40px;
+        min-height: auto;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .left-content h1 {
+        font-size: 2.5rem;
+      }
+
+      header {
+        padding: 15px 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+      }
+
+      .main-container {
+        padding: 20px;
+        min-height: auto;
+        background-size: cover;
+        background-position: center;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 60px;
+      }
+
+      .left-content h1 {
+        font-size: 2rem;
+      }
+
+      .glass-card {
+        max-width: 100%;
+      }
+
+      .stats {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .left-content {
+        gap: 15px;
+      }
+
+      .left-content p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">charity<span>:</span> water</div>
+    <button class="donate-btn-header" onclick="document.querySelector('.donate-btn-main').scrollIntoView({behavior: 'smooth'})">Donate Now</button>
+  </header>
+
+  <div class="main-container">
+    <!-- Left Side Content -->
+    <div class="left-content">
+      <div class="badge">100% Goes to Clean Water</div>
+      
+      <h1>Your drop makes a difference.</h1>
+      
+      <p>Tap to donate and watch your drop help fill the cup with clean, safe water for someone who needs it.</p>
+      
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-number">703M+</div>
+          <div class="stat-label">People lack clean water</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">$40</div>
+          <div class="stat-label">Gives one person clean water</div>
+        </div>
       </div>
-    </header>
-    <main>
-      <section class="about">
-        <h1>charity: water</h1>
-        <h2>Drop Challenge</h2>
-        <p>Every drop counts. Tap as fast as you can to fill the glass and help spread awareness for clean water!</p>
-        <p>703 million people lack access to clean water. Together, we can change that. $40 can give one person clean water for life.</p>
-      </section>
-      <nav class="links">
-        <a href="/game/">
-          <strong>Play Game</strong>
-          <span>Start the Drop Challenge</span>
-        </a>
-        <a href="https://leafy-pika-330dd2.netlify.app/donate/index.html">
-          <strong>Donate</strong>
-          <span>Make a real impact</span>
-        </a>
-        <a href="https://www.charitywater.org/about">
-          <strong>About</strong>
-          <span>Our mission</span>
-        </a>
-        <a href="https://www.charitywater.org/our-projects">
-          <strong>Projects</strong>
-          <span>See the impact</span>
-        </a>
-      </nav>
-    </main>
+    </div>
 
-    <!-- Dark mode button functionality -->
-    <script src="/js/dark-mode.js"></script>
-  </body>
+    <!-- Right Side - Glass Card -->
+    <div class="right-content">
+      <div class="glass-card">
+        <h2>Fill the Glass</h2>
+        <p class="subtitle">Every tap brings clean water closer</p>
+
+        <!-- Glass Visual -->
+        <div class="glass-visual">
+          <div class="glass-outline">
+            <div class="water-fill" id="waterFill"></div>
+          </div>
+        </div>
+
+        <p class="instruction">Tap the glass to add a drop!</p>
+
+        <!-- Amount Display -->
+        <div class="amount-display" id="amountDisplay">$0</div>
+        <div class="amount-sub" id="amountSub">of $40 to give one person clean water</div>
+
+        <!-- Donation Buttons -->
+        <div class="donation-grid">
+          <button class="donation-btn" onclick="selectAmount(5)">$5</button>
+          <button class="donation-btn active" onclick="selectAmount(10)">$10</button>
+          <button class="donation-btn" onclick="selectAmount(20)">$20</button>
+          <button class="donation-btn" onclick="selectAmount(40)">$40</button>
+          <button class="donation-btn" onclick="selectAmount(100)">$100</button>
+          <button class="donation-btn" onclick="selectAmount(250)">$250</button>
+        </div>
+
+        <!-- Custom Amount -->
+        <input type="number" class="custom-amount" id="customAmount" placeholder="Or enter custom amount" min="1">
+
+        <!-- Donate Button -->
+        <button class="donate-btn-main" onclick="processDonation()">DONATE NOW</button>
+
+        <!-- Play Game Button -->
+        <button class="play-game-btn" onclick="window.location.href='/game/'" style="margin-top: 1rem; width: 100%; padding: 0.8rem; background-color: #00A3E0; color: white; border: none; border-radius: 5px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background-color 0.3s;">PLAY DROP FOR DROP</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedAmount = 10;
+    let totalDonated = 0;
+
+    function selectAmount(amount) {
+      selectedAmount = amount;
+      document.getElementById('customAmount').value = '';
+      
+      // Update button states
+      document.querySelectorAll('.donation-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      updateDisplay();
+    }
+
+    document.getElementById('customAmount').addEventListener('input', function() {
+      if (this.value) {
+        selectedAmount = parseInt(this.value) || 0;
+        document.querySelectorAll('.donation-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        updateDisplay();
+      }
+    });
+
+    function updateDisplay() {
+      const total = totalDonated + selectedAmount;
+      document.getElementById('amountDisplay').textContent = '$' + total;
+      const percentage = Math.min((total / 40) * 100, 100);
+      document.getElementById('waterFill').style.height = percentage + '%';
+    }
+
+    function processDonation() {
+      if (selectedAmount <= 0) {
+        alert('Please select a valid amount');
+        return;
+      }
+
+      totalDonated += selectedAmount;
+      updateDisplay();
+      
+      // Add visual feedback
+      const waterFill = document.getElementById('waterFill');
+      waterFill.style.animation = 'none';
+      setTimeout(() => {
+        waterFill.style.animation = 'wave 3s linear infinite';
+      }, 10);
+
+      // Reset selection
+      selectedAmount = 10;
+      document.getElementById('customAmount').value = '';
+      document.querySelectorAll('.donation-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelectorAll('.donation-btn')[1].classList.add('active');
+
+      // Show success message
+      alert('Thank you for your donation! 🎉');
+    }
+
+    // Initialize display
+    updateDisplay();
+  </script>
+</body>
 </html>

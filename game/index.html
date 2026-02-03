@@ -2,942 +2,844 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Drop Challenge - charity: water</title>
-  <meta name="description" content="Tap to fill the glass! Every drop counts. Can you beat the clock and help bring clean water to those in need?">
-
-  <!-- Open Graph for sharing -->
-  <meta property="og:title" content="Drop Challenge - charity: water">
-  <meta property="og:description" content="I just filled my glass in the Drop Challenge! Can you beat my score?">
-  <meta property="og:type" content="website">
-
-  <link rel="shortcut icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drop for Drop - Game | charity: water</title>
+  <meta name="description" content="Drop for Drop - An educational game about water access. Learn to identify safe water sources.">
   <style>
-    /* charity: water Brand Colors - matching landing page theme */
-    :root {
-      --cw-yellow: #FFC82C;
-      --cw-yellow-light: #FFCF50;
-      --cw-yellow-dark: #E5B327;
-      --cw-blue-dark: #005587;
-      --cw-blue: #0077B5;
-      --cw-blue-light: #00A3E0;
-      --cw-water-blue: #00A3E0;
-      --cw-water-blue-light: #5BC4F1;
-      --cw-white: #F5F5F5;
-      --cw-black: #1A1A1A;
-      --cw-gray: #4A4A4A;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
     }
 
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
-
     body {
-      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(180deg, var(--cw-blue-dark) 0%, var(--cw-blue) 100%);
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #005587 0%, #0077B5 100%);
       min-height: 100vh;
-      overflow: hidden;
-      color: var(--cw-white);
-      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      color: #1A1A1A;
     }
 
     .game-container {
+      width: 100%;
+      max-width: 800px;
+      background: #F5F5F5;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      padding: 2rem;
+      min-height: 500px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 100vh;
-      padding: 20px;
-      position: relative;
+      justify-content: center;
     }
 
-    /* Header */
-    .header {
-      text-align: center;
-      z-index: 10;
-    }
-
-    .brand {
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-      opacity: 0.8;
-      margin-bottom: 5px;
-    }
-
-    .brand span {
-      color: var(--cw-yellow);
-    }
-
-    .title {
-      font-size: 2rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-    }
-
-    /* Stats Bar */
-    .stats-bar {
+    header {
       display: flex;
-      justify-content: space-around;
-      width: 100%;
-      max-width: 400px;
-      padding: 15px 0;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #00A3E0;
     }
 
-    .stat {
-      text-align: center;
-    }
-
-    .stat-value {
-      font-size: 2rem;
+    .logo {
+      font-size: 1.5rem;
       font-weight: 700;
-      color: var(--cw-yellow);
+      color: #005587;
+    }
+
+    .logo span {
+      color: #FFC82C;
+    }
+
+    .home-btn {
+      background: #FFC82C;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .home-btn:hover {
+      background: #FFCF50;
+    }
+
+    /* Screen Visibility */
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Intro Screen */
+    .intro-screen {
+      text-align: center;
+      gap: 2rem;
+    }
+
+    .intro-screen h1 {
+      font-size: 2.5rem;
+      color: #005587;
+      margin-bottom: 1rem;
+    }
+
+    .intro-screen p {
+      font-size: 1.1rem;
+      color: #4A4A4A;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: #0077B5;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #005587;
+    }
+
+    .btn-secondary {
+      background: #FFC82C;
+      color: #1A1A1A;
+    }
+
+    .btn-secondary:hover {
+      background: #FFCF50;
+    }
+
+    /* Gameplay Screen */
+    .gameplay-screen {
+      gap: 1.5rem;
+    }
+
+    .game-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-box {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid #00A3E0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .stat-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      opacity: 0.7;
-    }
-
-    /* Glass Container */
-    .glass-area {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      width: 100%;
-    }
-
-    .glass-container {
-      position: relative;
-      width: 180px;
-      height: 280px;
-      cursor: pointer;
-    }
-
-    .glass {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg,
-        rgba(255,255,255,0.1) 0%,
-        rgba(255,255,255,0.05) 50%,
-        rgba(255,255,255,0.1) 100%);
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 5px 5px 30px 30px;
-      overflow: hidden;
-      backdrop-filter: blur(5px);
-    }
-
-    .water {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 0%;
-      background: linear-gradient(180deg,
-        var(--cw-water-blue-light) 0%,
-        var(--cw-water-blue) 50%,
-        #0077B5 100%);
-      transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      border-radius: 0 0 27px 27px;
-    }
-
-    .water::before {
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: 0;
-      right: 0;
-      height: 20px;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10'%3E%3Cpath fill='%235BC4F1' d='M0 10 Q 12.5 0 25 10 Q 37.5 20 50 10 Q 62.5 0 75 10 Q 87.5 20 100 10 L 100 20 L 0 20 Z'/%3E%3C/svg%3E");
-      background-size: 50px 100%;
-      animation: wave 2s linear infinite;
-    }
-
-    @keyframes wave {
-      0% { background-position-x: 0; }
-      100% { background-position-x: 50px; }
-    }
-
-    /* Glass shine effect */
-    .glass::after {
-      content: '';
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      width: 30px;
-      height: 60%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
-      border-radius: 10px;
-    }
-
-    /* Tap instruction */
-    .tap-instruction {
-      position: absolute;
-      bottom: -60px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1rem;
+      font-size: 0.85rem;
+      color: #4A4A4A;
       font-weight: 600;
-      color: var(--cw-yellow);
-      animation: bounce 1s ease infinite;
-      white-space: nowrap;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(-10px); }
-    }
-
-    /* Drop animation */
-    .drop {
-      position: absolute;
-      width: 20px;
-      height: 30px;
-      background: radial-gradient(ellipse at 30% 30%, var(--cw-water-blue-light), var(--cw-water-blue));
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      animation: dropFall 0.6s ease-in forwards;
-      pointer-events: none;
-      z-index: 20;
-    }
-
-    @keyframes dropFall {
-      0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(200px) scale(0.5);
-      }
-    }
-
-    /* Splash effect */
-    .splash {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--cw-water-blue-light) 0%, transparent 70%);
-      animation: splash 0.4s ease-out forwards;
-      pointer-events: none;
-    }
-
-    @keyframes splash {
-      0% { transform: scale(0); opacity: 1; }
-      100% { transform: scale(2); opacity: 0; }
-    }
-
-    /* Action Button */
-    .action-area {
-      width: 100%;
-      max-width: 400px;
-      padding: 20px 0;
-      z-index: 10;
-    }
-
-    .tap-btn {
-      width: 100%;
-      padding: 20px 40px;
-      font-size: 1.2rem;
-      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      background: var(--cw-yellow);
-      color: var(--cw-blue-dark);
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 20px rgba(255, 200, 44, 0.4);
     }
 
-    .tap-btn:hover {
-      transform: scale(1.02);
-      box-shadow: 0 6px 25px rgba(255, 200, 44, 0.5);
+    .stat-value {
+      font-size: 1.8rem;
+      color: #005587;
+      font-weight: 800;
+      margin-top: 0.5rem;
     }
 
-    .tap-btn:active {
-      transform: scale(0.98);
+    .progress-section {
+      margin: 1.5rem 0;
     }
 
-    .tap-btn:disabled {
-      background: rgba(255, 200, 44, 0.5);
-      cursor: not-allowed;
-    }
-
-    /* Progress Bar */
-    .progress-container {
-      width: 100%;
-      height: 8px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 4px;
-      margin-top: 15px;
-      overflow: hidden;
+    .progress-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #005587;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
     }
 
     .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--cw-yellow) 0%, var(--cw-yellow-light) 100%);
-      border-radius: 4px;
-      transition: width 0.3s ease;
+      width: 100%;
+      height: 20px;
+      background: #E0E0E0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    /* Screens */
-    .screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+    .progress-fill {
       height: 100%;
-      background: linear-gradient(180deg, var(--cw-blue-dark) 0%, var(--cw-blue) 100%);
+      background: linear-gradient(90deg, #0077B5 0%, #00A3E0 100%);
+      transition: width 0.5s ease;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 30px;
-      z-index: 100;
-      text-align: center;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
+      justify-content: flex-end;
+      padding-right: 0.5rem;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
     }
 
-    .screen.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
+    .wellbeing-fill {
+      background: linear-gradient(90deg, #DB4648 0%, #E5B327 100%);
     }
 
-    .start-screen .title {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-
-    .start-screen .subtitle {
-      font-size: 1rem;
-      opacity: 0.8;
-      margin-bottom: 30px;
-      max-width: 300px;
-      line-height: 1.6;
-    }
-
-    .start-screen .big-drop {
-      width: 120px;
-      height: 180px;
-      background: radial-gradient(ellipse at 30% 30%, var(--cw-water-blue-light), var(--cw-water-blue));
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      margin-bottom: 30px;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-
-    .result-screen .score-display {
-      font-size: 4rem;
-      font-weight: 800;
-      color: var(--cw-yellow);
-      margin: 20px 0;
-    }
-
-    .result-screen .message {
-      font-size: 1.2rem;
-      opacity: 0.9;
-      margin-bottom: 30px;
-      max-width: 300px;
-      line-height: 1.6;
-    }
-
-    .result-screen .stats-grid {
+    .source-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-bottom: 30px;
-      width: 100%;
-      max-width: 350px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
     }
 
-    .share-btn {
-      width: 100%;
-      max-width: 300px;
-      padding: 18px 40px;
-      font-size: 1rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      background: var(--cw-yellow);
-      color: var(--cw-blue-dark);
-      border: none;
-      border-radius: 50px;
+    .source-card {
+      background: white;
+      border: 2px solid #E0E0E0;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
       cursor: pointer;
-      margin-bottom: 15px;
-      transition: all 0.2s ease;
+      transition: all 0.3s;
+      font-weight: 600;
     }
 
-    .share-btn:hover {
-      transform: scale(1.02);
+    .source-card:hover {
+      border-color: #00A3E0;
+      box-shadow: 0 4px 12px rgba(0, 163, 224, 0.2);
+      transform: translateY(-2px);
     }
 
-    .secondary-btn {
-      background: transparent;
-      border: 2px solid var(--cw-yellow);
-      color: var(--cw-yellow);
+    .source-card.correct {
+      border-color: #0F9F3D;
+      background: #E8F5E9;
+      animation: pulse-correct 0.6s ease;
     }
 
-    /* Impact message */
-    .impact-message {
-      background: rgba(255, 200, 44, 0.15);
-      border: 1px solid var(--cw-yellow);
-      border-radius: 15px;
-      padding: 20px;
-      margin: 20px 0;
-      max-width: 350px;
+    .source-card.incorrect {
+      border-color: #DB4648;
+      background: #FFEBEE;
+      animation: shake 0.4s ease;
     }
 
-    .impact-message h3 {
-      color: var(--cw-yellow);
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+    .source-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
     }
 
-    .impact-message p {
+    .source-name {
       font-size: 0.95rem;
-      line-height: 1.5;
-      opacity: 0.9;
+      color: #005587;
     }
 
-    /* Ripple effect on tap */
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 200, 44, 0.3);
-      animation: ripple 0.6s linear;
-      pointer-events: none;
+    .feedback-area {
+      min-height: 50px;
+      padding: 1rem;
+      border-radius: 8px;
+      background: #F0F0F0;
+      text-align: center;
+      display: none;
+      font-weight: 600;
+      font-size: 1rem;
     }
 
-    @keyframes ripple {
-      0% { width: 0; height: 0; opacity: 1; }
-      100% { width: 200px; height: 200px; opacity: 0; }
+    .feedback-area.active {
+      display: block;
     }
 
-    /* Combo indicator */
-    .combo {
-      position: absolute;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--cw-yellow);
-      animation: comboFloat 0.8s ease-out forwards;
-      pointer-events: none;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    .feedback-correct {
+      background: #E8F5E9;
+      color: #0F9F3D;
+      border-left: 4px solid #0F9F3D;
     }
 
-    @keyframes comboFloat {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+    .feedback-incorrect {
+      background: #FFEBEE;
+      color: #DB4648;
+      border-left: 4px solid #DB4648;
     }
 
-    /* Timer pulse when low */
-    .timer-warning {
-      animation: pulse 0.5s ease infinite;
+    .fact-toast {
+      background: #FFC82C;
+      color: #1A1A1A;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      font-weight: 600;
+      animation: slide-in 0.3s ease;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    /* Leaderboard hint */
-    .leaderboard-hint {
-      font-size: 0.8rem;
-      opacity: 0.6;
-      margin-top: 20px;
-    }
-
-    /* Navigation links */
-    .nav-links {
-      display: flex;
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .nav-link {
-      color: var(--cw-white);
-      text-decoration: none;
+    .round-info {
+      text-align: center;
       font-size: 0.9rem;
-      font-weight: 600;
-      opacity: 0.8;
-      transition: opacity 0.2s ease;
+      color: #4A4A4A;
+      margin-bottom: 1rem;
     }
 
-    .nav-link:hover {
-      opacity: 1;
-      text-decoration: underline;
+    /* End Screen */
+    .end-screen {
+      text-align: center;
+      gap: 1.5rem;
     }
 
-    .nav-link.highlight {
-      color: var(--cw-yellow);
-      opacity: 1;
+    .end-screen h1 {
+      font-size: 2rem;
+      color: #005587;
+      margin-bottom: 1rem;
     }
 
-    /* Mobile optimizations */
-    @media (max-width: 400px) {
-      .title { font-size: 1.5rem; }
-      .glass-container { width: 150px; height: 230px; }
-      .stat-value { font-size: 1.5rem; }
+    .end-stats {
+      background: #F0F0F0;
+      padding: 2rem;
+      border-radius: 10px;
+      margin: 1.5rem 0;
     }
 
-    /* Difficulty selector */
-    .difficulty-selector {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 30px;
+    .end-stat {
+      margin: 1rem 0;
+      font-size: 1.1rem;
+      color: #4A4A4A;
     }
 
-    .difficulty-btn {
-      padding: 12px 20px;
-      background: transparent;
-      border: 2px solid rgba(255,255,255,0.3);
-      color: var(--cw-white);
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s ease;
+    .end-stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0077B5;
     }
 
-    .difficulty-btn.active {
-      background: var(--cw-yellow);
-      border-color: var(--cw-yellow);
-      color: var(--cw-blue-dark);
+    .end-message {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #4A4A4A;
+      margin: 1.5rem 0;
+      font-style: italic;
     }
 
-    .difficulty-btn:hover:not(.active) {
-      border-color: var(--cw-yellow);
+    .how-to-screen {
+      text-align: left;
+      gap: 1rem;
+      overflow-y: auto;
+      max-height: 70vh;
+    }
+
+    .how-to-screen h1 {
+      color: #005587;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .how-to-screen h2 {
+      color: #0077B5;
+      font-size: 1.2rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .how-to-screen p {
+      color: #4A4A4A;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .how-to-screen ul {
+      margin-left: 1.5rem;
+      color: #4A4A4A;
+      line-height: 1.8;
+    }
+
+    .how-to-screen li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Animations */
+    @keyframes pulse-correct {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(15, 159, 61, 0.5); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fact-toast {
+      animation: slide-in 0.3s ease, slide-out 0.3s ease 2.7s forwards;
+    }
+
+    @keyframes slide-out {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-10px); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .game-container {
+        padding: 1.5rem;
+      }
+
+      .game-header {
+        grid-template-columns: 1fr;
+      }
+
+      .intro-screen h1 {
+        font-size: 1.8rem;
+      }
+
+      .source-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .game-container {
+        padding: 1rem;
+      }
+
+      .intro-screen h1 {
+        font-size: 1.5rem;
+      }
+
+      .source-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-value {
+        font-size: 1.3rem;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Start Screen -->
-  <div class="screen start-screen" id="startScreen">
-    <div class="brand">charity<span>:</span> water presents</div>
-    <h1 class="title">DROP CHALLENGE</h1>
-    <p class="subtitle">Every drop counts. Tap as fast as you can to fill the glass and help bring clean water to those in need!</p>
-
-    <div class="big-drop"></div>
-
-    <div class="difficulty-selector">
-      <button class="difficulty-btn active" data-time="15">15s</button>
-      <button class="difficulty-btn" data-time="30">30s</button>
-      <button class="difficulty-btn" data-time="60">60s</button>
-    </div>
-
-    <button class="tap-btn" id="startBtn">START CHALLENGE</button>
-
-    <p class="leaderboard-hint">Can you fill the glass before time runs out?</p>
-
-    <div class="nav-links">
-      <a href="/" class="nav-link">Back to Home</a>
-      <a href="https://leafy-pika-330dd2.netlify.app/donate/index.html" class="nav-link highlight">Donate Now</a>
-    </div>
-  </div>
-
-  <!-- Game Screen -->
-  <div class="game-container" id="gameScreen" style="display: none;">
-    <header class="header">
-      <div class="brand">charity<span>:</span> water</div>
-      <h1 class="title">DROP CHALLENGE</h1>
+  <div class="game-container">
+    <header>
+      <div class="logo">charity<span>:</span> water</div>
+      <button class="home-btn" onclick="window.location.href='/'">← Back to Home</button>
     </header>
 
-    <div class="stats-bar">
-      <div class="stat">
-        <div class="stat-value" id="drops">0</div>
-        <div class="stat-label">Drops</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value" id="timer">15</div>
-        <div class="stat-label">Seconds</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value" id="combo">x1</div>
-        <div class="stat-label">Combo</div>
+    <!-- Intro Screen -->
+    <div class="screen intro-screen active">
+      <h1>Drop for Drop</h1>
+      <p>Learn to identify safe water sources. Every correct choice fills the tank and saves lives.</p>
+      <p style="font-size: 0.95rem; color: #666;">Click the clean water source to fill the tank. You have 60 seconds!</p>
+      <div class="button-group">
+        <button class="btn-primary" onclick="startGame()">Start Game</button>
+        <button class="btn-secondary" onclick="showHowToPlay()">How to Play</button>
       </div>
     </div>
 
-    <div class="glass-area" id="glassArea">
-      <div class="glass-container" id="glassContainer">
-        <div class="glass">
-          <div class="water" id="water"></div>
+    <!-- How to Play Screen -->
+    <div class="screen how-to-screen">
+      <h1>How to Play</h1>
+      <div style="text-align: left;">
+        <h2>🎯 Objective</h2>
+        <p>Fill the water tank by selecting clean water sources before time runs out.</p>
+
+        <h2>💧 Game Mechanics</h2>
+        <ul>
+          <li><strong>Each round:</strong> You'll see 3-5 water sources</li>
+          <li><strong>Your task:</strong> Click the clean, safe water source</li>
+          <li><strong>Correct choice:</strong> Tank fills by 8%, you gain 10 drops</li>
+          <li><strong>Wrong choice:</strong> Well-being drops by 12%, you lose 5 drops</li>
+          <li><strong>Time limit:</strong> 60 seconds to fill the tank 100%</li>
+        </ul>
+
+        <h2>📊 What You're Managing</h2>
+        <ul>
+          <li><strong>Tank Fill %:</strong> Your progress toward the goal</li>
+          <li><strong>Well-being:</strong> Your resilience—running out ends the game</li>
+          <li><strong>Drops:</strong> Your score for correct choices</li>
+          <li><strong>Time:</strong> The countdown to completion</li>
+        </ul>
+
+        <h2>🌟 Tips</h2>
+        <ul>
+          <li>Read each source carefully before clicking</li>
+          <li>Think about water safety in real life</li>
+          <li>Build streaks of correct answers to earn bonus insights</li>
+          <li>If you make a mistake, don't worry—keep going!</li>
+        </ul>
+
+        <h2>🎓 Learn</h2>
+        <p>This game reflects real challenges faced by communities without safe water access. Every choice teaches something about water safety and the importance of clean water access initiatives.</p>
+      </div>
+      <div style="margin-top: 2rem; text-align: center;">
+        <button class="btn-primary" onclick="startGame()">Ready to Play!</button>
+        <button class="btn-secondary" onclick="backToIntro()" style="margin-left: 1rem;">Back</button>
+      </div>
+    </div>
+
+    <!-- Gameplay Screen -->
+    <div class="screen gameplay-screen">
+      <div class="game-header">
+        <div class="stat-box">
+          <div class="stat-label">Time Left</div>
+          <div class="stat-value" id="timerDisplay">60s</div>
         </div>
-        <div class="tap-instruction">TAP THE GLASS!</div>
+        <div class="stat-box">
+          <div class="stat-label">Drops</div>
+          <div class="stat-value" id="dropsDisplay">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Streak</div>
+          <div class="stat-value" id="streakDisplay">0</div>
+        </div>
       </div>
+
+      <div class="progress-section">
+        <div class="progress-label">
+          <span>Tank Fill</span>
+          <span id="tankPercentDisplay">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="tankFill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-label">
+          <span>Well-being</span>
+          <span id="wellBeingPercentDisplay">100%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill wellbeing-fill" id="wellBeingFill" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <div class="round-info">
+        <p>Round <span id="roundNumber">1</span> — Select the clean water source</p>
+      </div>
+
+      <div class="source-grid" id="sourceGrid"></div>
+
+      <div class="feedback-area" id="feedbackArea"></div>
+      <div id="factToast"></div>
     </div>
 
-    <div class="action-area">
-      <button class="tap-btn" id="tapBtn">TAP FOR DROPS</button>
-      <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
+    <!-- End Screen -->
+    <div class="screen end-screen">
+      <h1 id="endTitle">Game Over!</h1>
+      <div class="end-stats">
+        <div class="end-stat">
+          Total Drops Collected
+          <div class="end-stat-value" id="endDrops">0</div>
+        </div>
+        <div class="end-stat">
+          Tank Fill
+          <div class="end-stat-value" id="endTank">0%</div>
+        </div>
+        <div class="end-stat">
+          Best Streak
+          <div class="end-stat-value" id="endStreak">0</div>
+        </div>
+      </div>
+      <div class="end-message" id="endMessage"></div>
+      <div class="button-group">
+        <button class="btn-primary" onclick="startGame()">Play Again</button>
+        <button class="btn-secondary" onclick="window.location.href='/'">Back to Home</button>
       </div>
     </div>
-  </div>
-
-  <!-- Result Screen -->
-  <div class="screen result-screen hidden" id="resultScreen">
-    <div class="brand">charity<span>:</span> water</div>
-    <h2 class="title" id="resultTitle">AMAZING!</h2>
-
-    <div class="score-display" id="finalScore">0</div>
-    <div class="stat-label">DROPS COLLECTED</div>
-
-    <div class="stats-grid">
-      <div class="stat">
-        <div class="stat-value" id="finalTaps">0</div>
-        <div class="stat-label">Taps/sec</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value" id="finalCombo">x1</div>
-        <div class="stat-label">Best Combo</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value" id="glassPercent">0%</div>
-        <div class="stat-label">Glass Filled</div>
-      </div>
-    </div>
-
-    <div class="impact-message">
-      <h3>Your Impact</h3>
-      <p id="impactText">With charity: water, 100% of public donations directly fund clean water projects. $40 can give one person clean water for life.</p>
-    </div>
-
-    <button class="share-btn" id="shareBtn">SHARE YOUR SCORE</button>
-    <button class="share-btn secondary-btn" id="donateBtn">MAKE A REAL DROP</button>
-    <button class="share-btn secondary-btn" id="playAgainBtn">PLAY AGAIN</button>
   </div>
 
   <script>
     // Game State
-    const state = {
+    let gameState = {
+      timeLeft: 60,
+      tankFill: 0,
+      wellBeing: 100,
       drops: 0,
-      timeLeft: 15,
-      totalTime: 15,
-      combo: 1,
-      maxCombo: 1,
-      lastTap: 0,
-      isPlaying: false,
-      tapCount: 0,
-      glassCapacity: 100
+      roundNumber: 1,
+      correctStreak: 0,
+      bestStreak: 0,
+      gameActive: false,
+      timerInterval: null,
+      sources: []
     };
 
-    // DOM Elements
-    const elements = {
-      startScreen: document.getElementById('startScreen'),
-      gameScreen: document.getElementById('gameScreen'),
-      resultScreen: document.getElementById('resultScreen'),
-      startBtn: document.getElementById('startBtn'),
-      tapBtn: document.getElementById('tapBtn'),
-      glassArea: document.getElementById('glassArea'),
-      glassContainer: document.getElementById('glassContainer'),
-      water: document.getElementById('water'),
-      dropsDisplay: document.getElementById('drops'),
-      timerDisplay: document.getElementById('timer'),
-      comboDisplay: document.getElementById('combo'),
-      progressBar: document.getElementById('progressBar'),
-      finalScore: document.getElementById('finalScore'),
-      finalTaps: document.getElementById('finalTaps'),
-      finalCombo: document.getElementById('finalCombo'),
-      glassPercent: document.getElementById('glassPercent'),
-      resultTitle: document.getElementById('resultTitle'),
-      impactText: document.getElementById('impactText'),
-      shareBtn: document.getElementById('shareBtn'),
-      donateBtn: document.getElementById('donateBtn'),
-      playAgainBtn: document.getElementById('playAgainBtn'),
-      difficultyBtns: document.querySelectorAll('.difficulty-btn')
+    const waterSources = {
+      clean: [
+        { name: 'Community Well', icon: '💧', safe: true },
+        { name: 'Treated Water', icon: '✨', safe: true },
+        { name: 'Rainwater Tank', icon: '☔', safe: true },
+        { name: 'Spring Water', icon: '🌊', safe: true },
+        { name: 'Boiled Water', icon: '🔥', safe: true }
+      ],
+      unsafe: [
+        { name: 'River', icon: '🌊', safe: false },
+        { name: 'Stagnant Pond', icon: '🐸', safe: false },
+        { name: 'Contaminated Well', icon: '☠️', safe: false },
+        { name: 'Drainage', icon: '🚫', safe: false },
+        { name: 'Untreated Stream', icon: '🪨', safe: false }
+      ]
     };
 
-    let timerInterval;
+    const facts = [
+      '💧 Access to clean water is a human right, yet 703 million people lack it.',
+      '🌍 One person dies every 21 seconds from water-related diseases.',
+      '⏰ A simple well can transform a community in weeks.',
+      '👨‍👩‍👧‍👦 Children collect water for 8+ hours daily in many regions.',
+      '🏥 Clean water prevents 99% of water-borne illness deaths.',
+      '🌱 Water access improves school attendance by 50%.',
+      '💪 Education about water safety saves lives in every community.'
+    ];
 
-    // Initialize
-    function init() {
-      elements.startBtn.addEventListener('click', startGame);
-      elements.tapBtn.addEventListener('click', handleTap);
-      elements.glassContainer.addEventListener('click', handleTap);
-      elements.shareBtn.addEventListener('click', shareScore);
-      elements.donateBtn.addEventListener('click', () => {
-        window.open('https://leafy-pika-330dd2.netlify.app/donate/index.html', '_blank');
-      });
-      elements.playAgainBtn.addEventListener('click', resetGame);
+    function showScreen(screenName) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelector(`.${screenName}`).classList.add('active');
+    }
 
-      // Difficulty selection
-      elements.difficultyBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          elements.difficultyBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          state.totalTime = parseInt(btn.dataset.time);
-          state.timeLeft = state.totalTime;
-        });
-      });
+    function backToIntro() {
+      showScreen('intro-screen');
+    }
 
-      // Keyboard support
-      document.addEventListener('keydown', (e) => {
-        if (e.code === 'Space' && state.isPlaying) {
-          e.preventDefault();
-          handleTap();
-        }
-      });
-
-      // Touch support for glass area
-      elements.glassArea.addEventListener('touchstart', (e) => {
-        if (state.isPlaying) {
-          e.preventDefault();
-          handleTap(e.touches[0]);
-        }
-      });
+    function showHowToPlay() {
+      showScreen('how-to-screen');
     }
 
     function startGame() {
-      state.drops = 0;
-      state.timeLeft = state.totalTime;
-      state.combo = 1;
-      state.maxCombo = 1;
-      state.tapCount = 0;
-      state.isPlaying = true;
+      gameState = {
+        timeLeft: 60,
+        tankFill: 0,
+        wellBeing: 100,
+        drops: 0,
+        roundNumber: 1,
+        correctStreak: 0,
+        bestStreak: 0,
+        gameActive: true,
+        timerInterval: null,
+        sources: []
+      };
 
-      elements.startScreen.classList.add('hidden');
-      elements.gameScreen.style.display = 'flex';
-      elements.resultScreen.classList.add('hidden');
+      showScreen('gameplay-screen');
+      generateRound();
+      startTimer();
+    }
 
-      updateDisplay();
+    function startTimer() {
+      gameState.timerInterval = setInterval(() => {
+        gameState.timeLeft--;
+        updateDisplay();
 
-      timerInterval = setInterval(() => {
-        state.timeLeft--;
-        updateTimerDisplay();
+        if (gameState.timeLeft <= 0) {
+          endGame(false);
+        }
 
-        if (state.timeLeft <= 0) {
-          endGame();
+        if (gameState.tankFill >= 100) {
+          endGame(true);
+        }
+
+        if (gameState.wellBeing <= 0) {
+          endGame(false, 'wellbeing');
         }
       }, 1000);
     }
 
-    function handleTap(event) {
-      if (!state.isPlaying) return;
+    function generateRound() {
+      const numSources = 3 + Math.floor(Math.random() * 3); // 3-5 sources
+      gameState.sources = [];
 
-      const now = Date.now();
-      const timeSinceLastTap = now - state.lastTap;
+      // Pick one clean source
+      const cleanSource = waterSources.clean[Math.floor(Math.random() * waterSources.clean.length)];
+      gameState.sources.push({ ...cleanSource });
 
-      // Combo system - faster taps = higher combo
-      if (timeSinceLastTap < 300) {
-        state.combo = Math.min(state.combo + 1, 10);
-        if (state.combo > state.maxCombo) {
-          state.maxCombo = state.combo;
+      // Pick remaining as unsafe
+      const unsafeNeeded = numSources - 1;
+      const unsafeUsed = new Set();
+
+      while (gameState.sources.length < numSources) {
+        const unsafe = waterSources.unsafe[Math.floor(Math.random() * waterSources.unsafe.length)];
+        const key = unsafe.name;
+        if (!unsafeUsed.has(key)) {
+          gameState.sources.push({ ...unsafe });
+          unsafeUsed.add(key);
         }
-        showCombo(event);
-      } else if (timeSinceLastTap > 1000) {
-        state.combo = 1;
       }
 
-      state.lastTap = now;
-      state.tapCount++;
-
-      // Add drops based on combo
-      const dropsToAdd = state.combo;
-      state.drops += dropsToAdd;
-
-      // Visual feedback
-      createDrop(event);
-      createRipple(event);
-
-      updateDisplay();
+      // Shuffle sources
+      gameState.sources.sort(() => Math.random() - 0.5);
+      renderSources();
     }
 
-    function createDrop(event) {
-      const drop = document.createElement('div');
-      drop.className = 'drop';
+    function renderSources() {
+      const grid = document.getElementById('sourceGrid');
+      grid.innerHTML = '';
 
-      // Position drop at tap location or center
-      if (event && event.clientX) {
-        drop.style.left = (event.clientX - 10) + 'px';
-        drop.style.top = (event.clientY - 15) + 'px';
-      } else {
-        const rect = elements.glassContainer.getBoundingClientRect();
-        drop.style.left = (rect.left + rect.width / 2 - 10) + 'px';
-        drop.style.top = (rect.top - 30) + 'px';
-      }
-
-      document.body.appendChild(drop);
-
-      // Create splash at water level
-      setTimeout(() => {
-        createSplash();
-      }, 400);
-
-      setTimeout(() => {
-        drop.remove();
-      }, 600);
-    }
-
-    function createSplash() {
-      const splash = document.createElement('div');
-      splash.className = 'splash';
-
-      const rect = elements.water.getBoundingClientRect();
-      splash.style.left = (rect.left + rect.width / 2 - 20) + 'px';
-      splash.style.top = (rect.top - 10) + 'px';
-
-      document.body.appendChild(splash);
-
-      setTimeout(() => {
-        splash.remove();
-      }, 400);
-    }
-
-    function createRipple(event) {
-      const ripple = document.createElement('div');
-      ripple.className = 'ripple';
-
-      if (event && event.clientX) {
-        ripple.style.left = (event.clientX - 100) + 'px';
-        ripple.style.top = (event.clientY - 100) + 'px';
-      } else {
-        const rect = elements.tapBtn.getBoundingClientRect();
-        ripple.style.left = (rect.left + rect.width / 2 - 100) + 'px';
-        ripple.style.top = (rect.top + rect.height / 2 - 100) + 'px';
-      }
-
-      document.body.appendChild(ripple);
-
-      setTimeout(() => {
-        ripple.remove();
-      }, 600);
-    }
-
-    function showCombo(event) {
-      if (state.combo < 2) return;
-
-      const combo = document.createElement('div');
-      combo.className = 'combo';
-      combo.textContent = `x${state.combo}!`;
-
-      if (event && event.clientX) {
-        combo.style.left = (event.clientX + 20) + 'px';
-        combo.style.top = (event.clientY - 20) + 'px';
-      } else {
-        const rect = elements.glassContainer.getBoundingClientRect();
-        combo.style.left = (rect.right + 10) + 'px';
-        combo.style.top = (rect.top + rect.height / 2) + 'px';
-      }
-
-      document.body.appendChild(combo);
-
-      setTimeout(() => {
-        combo.remove();
-      }, 800);
-    }
-
-    function updateDisplay() {
-      elements.dropsDisplay.textContent = state.drops;
-      elements.comboDisplay.textContent = `x${state.combo}`;
-
-      // Update water level (max 100%)
-      const fillPercent = Math.min((state.drops / state.glassCapacity) * 100, 100);
-      elements.water.style.height = fillPercent + '%';
-      elements.progressBar.style.width = fillPercent + '%';
-    }
-
-    function updateTimerDisplay() {
-      elements.timerDisplay.textContent = state.timeLeft;
-
-      // Warning animation when time is low
-      if (state.timeLeft <= 5) {
-        elements.timerDisplay.classList.add('timer-warning');
-      } else {
-        elements.timerDisplay.classList.remove('timer-warning');
-      }
-    }
-
-    function endGame() {
-      state.isPlaying = false;
-      clearInterval(timerInterval);
-
-      // Calculate results
-      const tapsPerSecond = (state.tapCount / state.totalTime).toFixed(1);
-      const fillPercent = Math.min(Math.round((state.drops / state.glassCapacity) * 100), 100);
-
-      // Set result screen content
-      elements.finalScore.textContent = state.drops;
-      elements.finalTaps.textContent = tapsPerSecond;
-      elements.finalCombo.textContent = `x${state.maxCombo}`;
-      elements.glassPercent.textContent = fillPercent + '%';
-
-      // Dynamic title based on performance
-      if (fillPercent >= 100) {
-        elements.resultTitle.textContent = 'LEGENDARY!';
-        elements.impactText.textContent = 'You filled the entire glass! With charity: water, 100% of public donations directly fund clean water projects. Your dedication could help change lives!';
-      } else if (fillPercent >= 75) {
-        elements.resultTitle.textContent = 'AMAZING!';
-        elements.impactText.textContent = 'Incredible effort! 703 million people still lack clean water. Your drops represent hope for communities around the world.';
-      } else if (fillPercent >= 50) {
-        elements.resultTitle.textContent = 'GREAT JOB!';
-        elements.impactText.textContent = 'Every drop counts! charity: water has helped bring clean water to 18+ million people. Keep spreading the word!';
-      } else if (fillPercent >= 25) {
-        elements.resultTitle.textContent = 'GOOD START!';
-        elements.impactText.textContent = 'A journey of a thousand miles begins with a single drop. $40 can give one person clean water for life.';
-      } else {
-        elements.resultTitle.textContent = 'KEEP TRYING!';
-        elements.impactText.textContent = 'Practice makes perfect! The more you play, the more awareness you spread about the global water crisis.';
-      }
-
-      // Show result screen
-      elements.gameScreen.style.display = 'none';
-      elements.resultScreen.classList.remove('hidden');
-    }
-
-    function shareScore() {
-      const fillPercent = Math.min(Math.round((state.drops / state.glassCapacity) * 100), 100);
-      const shareText = `I just collected ${state.drops} drops and filled ${fillPercent}% of the glass in the Drop Challenge! 💧 Can you beat my score? Every drop counts for clean water! #charitywater #DropChallenge`;
-
-      if (navigator.share) {
-        navigator.share({
-          title: 'Drop Challenge - charity: water',
-          text: shareText,
-          url: window.location.href
-        }).catch(() => {
-          copyToClipboard(shareText);
-        });
-      } else {
-        copyToClipboard(shareText);
-      }
-    }
-
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        elements.shareBtn.textContent = 'COPIED!';
-        setTimeout(() => {
-          elements.shareBtn.textContent = 'SHARE YOUR SCORE';
-        }, 2000);
+      gameState.sources.forEach((source, index) => {
+        const card = document.createElement('div');
+        card.className = 'source-card';
+        card.innerHTML = `
+          <div class="source-icon">${source.icon}</div>
+          <div class="source-name">${source.name}</div>
+        `;
+        card.onclick = () => selectSource(index);
+        grid.appendChild(card);
       });
     }
 
-    function resetGame() {
-      elements.resultScreen.classList.add('hidden');
-      elements.startScreen.classList.remove('hidden');
-      elements.gameScreen.style.display = 'none';
-      elements.water.style.height = '0%';
-      elements.progressBar.style.width = '0%';
-      elements.timerDisplay.classList.remove('timer-warning');
+    function selectSource(index) {
+      if (!gameState.gameActive) return;
+
+      const source = gameState.sources[index];
+      const card = document.querySelectorAll('.source-card')[index];
+
+      if (source.safe) {
+        handleCorrect(card);
+      } else {
+        handleIncorrect(card);
+      }
     }
 
-    // Start the game
-    init();
+    function handleCorrect(card) {
+      card.classList.add('correct');
+      gameState.drops += 10;
+      gameState.tankFill = Math.min(100, gameState.tankFill + 8);
+      gameState.wellBeing = Math.min(100, gameState.wellBeing + 2);
+      gameState.correctStreak++;
+      gameState.bestStreak = Math.max(gameState.bestStreak, gameState.correctStreak);
+
+      showFeedback('✓ Clean choice! +10 drops', true);
+
+      if (gameState.correctStreak % 3 === 0) {
+        showFact();
+      }
+
+      updateDisplay();
+
+      setTimeout(() => {
+        if (gameState.gameActive && gameState.tankFill < 100 && gameState.wellBeing > 0) {
+          gameState.roundNumber++;
+          generateRound();
+          clearFeedback();
+        }
+      }, 800);
+    }
+
+    function handleIncorrect(card) {
+      card.classList.add('incorrect');
+      gameState.drops = Math.max(0, gameState.drops - 5);
+      gameState.tankFill = Math.max(0, gameState.tankFill - 2);
+      gameState.wellBeing = Math.max(0, gameState.wellBeing - 12);
+      gameState.correctStreak = 0;
+
+      showFeedback('✗ Not safe—try another', false);
+      updateDisplay();
+
+      setTimeout(() => {
+        if (gameState.gameActive && gameState.wellBeing > 0) {
+          generateRound();
+          clearFeedback();
+        }
+      }, 800);
+    }
+
+    function showFeedback(message, isCorrect) {
+      const area = document.getElementById('feedbackArea');
+      area.textContent = message;
+      area.className = isCorrect ? 'feedback-area active feedback-correct' : 'feedback-area active feedback-incorrect';
+    }
+
+    function clearFeedback() {
+      document.getElementById('feedbackArea').classList.remove('active');
+    }
+
+    function showFact() {
+      const fact = facts[Math.floor(Math.random() * facts.length)];
+      const toast = document.getElementById('factToast');
+      toast.className = 'fact-toast';
+      toast.textContent = fact;
+
+      setTimeout(() => {
+        toast.className = '';
+        toast.textContent = '';
+      }, 3000);
+    }
+
+    function updateDisplay() {
+      document.getElementById('timerDisplay').textContent = gameState.timeLeft + 's';
+      document.getElementById('dropsDisplay').textContent = gameState.drops;
+      document.getElementById('streakDisplay').textContent = gameState.correctStreak;
+      document.getElementById('roundNumber').textContent = gameState.roundNumber;
+
+      document.getElementById('tankPercentDisplay').textContent = gameState.tankFill + '%';
+      document.getElementById('tankFill').style.width = gameState.tankFill + '%';
+
+      document.getElementById('wellBeingPercentDisplay').textContent = gameState.wellBeing + '%';
+      document.getElementById('wellBeingFill').style.width = gameState.wellBeing + '%';
+    }
+
+    function endGame(won, reason = null) {
+      gameState.gameActive = false;
+      clearInterval(gameState.timerInterval);
+
+      let title = 'Game Over!';
+      let message = '';
+
+      if (reason === 'wellbeing') {
+        title = 'That was tough!';
+        message = 'Access to clean water is complicated. Many communities face these decisions daily. Your empathy can help change this. Every donation brings hope.';
+      } else if (won) {
+        title = '🎉 You filled the tank!';
+        message = `You demonstrated the importance of clean water choices. In real life, communities don't always have safe options. Your understanding can drive change.`;
+      } else {
+        title = '⏰ Time\'s up!';
+        message = `You collected ${gameState.drops} drops and proved that clean water decisions matter. Thank you for learning about global water challenges.`;
+      }
+
+      document.getElementById('endTitle').textContent = title;
+      document.getElementById('endDrops').textContent = gameState.drops;
+      document.getElementById('endTank').textContent = gameState.tankFill + '%';
+      document.getElementById('endStreak').textContent = gameState.bestStreak;
+      document.getElementById('endMessage').textContent = message;
+
+      showScreen('end-screen');
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (gameState.gameActive) {
+          gameState.gameActive = false;
+          clearInterval(gameState.timerInterval);
+          backToIntro();
+        }
+      }
+    });
   </script>
 </body>
 </html>
